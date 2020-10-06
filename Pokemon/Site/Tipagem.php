@@ -17,16 +17,19 @@
   </head>
 
   <body>
-    <button onclick="topFunction()" id="meuBotao" title="Go to top">Top</button> 
+    <button onclick="topFunction();" id="meuBotao" title="Go to top">Top</button>
+
     <script>
       //Get the button:
       mybutton = document.getElementById("meuBotao");
       
       // When the user scrolls down 20px from the top of the document, show the button
-      window.onscroll = function() {scrollFunction()};
+      window.onscroll = function() { scrollFunction() };
       
-      function scrollFunction() {
-        if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
+      function scrollFunction()
+      {
+        if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30)
+        {
           mybutton.style.display = "block";
         } else {
           mybutton.style.display = "none";
@@ -34,7 +37,8 @@
       }
       
       // When the user clicks on the button, scroll to the top of the document
-      function topFunction() {
+      function topFunction()
+      {
         document.body.scrollTop = 0; // For Safari
         document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
       }
@@ -45,9 +49,9 @@
         {
           var x = document.getElementsByClassName(i);
 
-          for (var b = 0; b < x.length; b++)
+          for (var a = 0; a < x.length; a++)
           {
-            x[b].style.display = 'none';
+            x[a].style.display = 'none';
           }
         }
 
@@ -112,87 +116,53 @@
 
         <div class="Tabelas">
           <?php
-            for ($i = 1; $i <= 18; $i++)
+            for ($i = 1; $i < 18; $i++)
             {
           ?>
-              <table align="center" border class="<?php echo $i ?>">
+              <table class="<?php echo $i; ?>">
                 <tr>
                   <th>Fraquezas</th>
-                </tr>
-
-                <tr>
-                  <th>
-                    <?php
-                      $Fraquezas = mysqli_query($connect, "call Fraquezas($i);");
-                      while ($list = mysqli_fetch_assoc($Fraquezas))
-                      {
-                        echo $list['F'] . "<br/>"; 
-                      }
-                      
-                      $Fraquezas->close();
-                      $connect->next_result();
-                    ?>
-                  </th>
-                </tr>
-              </table>
-          <?php
-            }
-          ?>
-          
-          <br/>
-
-          <?php
-            for ($i = 1; $i <= 18; $i++)
-            {
-          ?>
-              <table align="center" border class="<?php echo $i ?>">
-                <tr>
                   <th>Resistências 1x</th>
-                </tr>
-
-                <tr>
-                  <th>
-                    <?php
-                        $Resistencias = mysqli_query($connect, "call Resistencias1x($i);");
-                        while ($list = mysqli_fetch_assoc($Resistencias))
-                        {
-                          if ( $list['1x'] != null ) echo $list['1x'] . "<br/>"; 
-                        }
-                        
-                        $Resistencias->close();
-                        $connect->next_result();
-                    ?>
-                  </th>
-                </tr>
-              </table>
-          <?php
-            }
-          ?>
-
-          <br/>
-
-          <?php
-            for ($i = 1; $i <= 18; $i++)
-            {
-          ?>
-              <table align="center" border class="<?php echo $i ?>">
-                <tr>
                   <th>Resistências 2x</th>
                 </tr>
 
                 <tr>
-                  <th>
-                    <?php
-                      $Resistencias2x = mysqli_query($connect, "call Resistencias2x($i);");
-                      while ($list = mysqli_fetch_assoc($Resistencias2x))
+                  <?php
+                    $Fraquezas = mysqli_query($connect, "call Fraquezas($i);");
+                    while ($list = mysqli_fetch_assoc($Fraquezas))
+                    {
+                      echo '<td>' . $list['F'] . '</td>'; 
+                    }
+                    
+                    $Fraquezas->close();
+                    $connect->next_result();
+                  ?>
+                </tr>
+
+                <tr>
+                  <?php
+                      $Resistencias = mysqli_query($connect, "call Resistencias1x($i);");
+                      while ($list = mysqli_fetch_assoc($Resistencias))
                       {
-                        if ( $list['2x'] != null ) echo $list['2x'] . "<br/>"; 
+                        echo '<td>' . $list['1x'] . '</td>'; 
                       }
                       
-                      $Resistencias2x->close();
+                      $Resistencias->close();
                       $connect->next_result();
-                    ?>
-                  </th>
+                  ?>
+                </tr>
+
+                <tr>
+                  <?php
+                    $Resistencias2x = mysqli_query($connect, "call Resistencias2x($i);");
+                    while ($list = mysqli_fetch_assoc($Resistencias2x))
+                    {
+                      if ( $list['2x'] != null ) echo '<td>' . $list['2x'] . '</td>'; 
+                    }
+                    
+                    $Resistencias2x->close();
+                    $connect->next_result();
+                  ?>
                 </tr>
               </table>
           <?php
