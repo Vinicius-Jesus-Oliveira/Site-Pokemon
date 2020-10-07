@@ -1,6 +1,35 @@
 <?php
   require_once 'Connection.php';
   session_start();
+
+  $Fraquezas = array('1' => '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+  $Fraqueza = array();
+
+  for ($i = 1; $i <= 18; $i++)
+  {
+    $sql = mysqli_query($connect, "call fraquezas($i);");
+
+    while ($list = mysqli_fetch_array($sql))
+      $Fraquezas[$i] = $Fraquezas[$i] . "," . $list['F'];
+    
+    $Fraquezas[$i] = substr($Fraquezas[$i], 1);
+    $Fraqueza[$i] = explode(",", $Fraquezas[$i]);
+
+    mysqli_free_result($sql);
+    mysqli_next_result($connect);
+  }
+
+  for ($a = 1; $a <= 18; $a++)
+  {
+    for ($i = 0; $i < count($Fraqueza[$a]); $i++)
+    {
+      echo $Fraqueza[$a][$i] . "
+      ";
+    }
+
+    echo "
+    ";
+  }
 ?>
 
 <!DOCTYPE html>
@@ -128,40 +157,16 @@
 
                 <tr>
                   <?php
-                    $Fraquezas = mysqli_query($connect, "call Fraquezas($i);");
-                    while ($list = mysqli_fetch_assoc($Fraquezas))
-                    {
-                      echo '<td>' . $list['F'] . '</td>'; 
-                    }
-                    
-                    $Fraquezas->close();
-                    $connect->next_result();
                   ?>
                 </tr>
 
                 <tr>
                   <?php
-                      $Resistencias = mysqli_query($connect, "call Resistencias1x($i);");
-                      while ($list = mysqli_fetch_assoc($Resistencias))
-                      {
-                        echo '<td>' . $list['1x'] . '</td>'; 
-                      }
-                      
-                      $Resistencias->close();
-                      $connect->next_result();
                   ?>
                 </tr>
 
                 <tr>
                   <?php
-                    $Resistencias2x = mysqli_query($connect, "call Resistencias2x($i);");
-                    while ($list = mysqli_fetch_assoc($Resistencias2x))
-                    {
-                      if ( $list['2x'] != null ) echo '<td>' . $list['2x'] . '</td>'; 
-                    }
-                    
-                    $Resistencias2x->close();
-                    $connect->next_result();
                   ?>
                 </tr>
               </table>

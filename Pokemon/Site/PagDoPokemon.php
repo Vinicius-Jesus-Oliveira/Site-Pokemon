@@ -20,7 +20,7 @@
   INNER JOIN tbTipo ON tbTipo.codTipo = tbPokemon.CodTipo and tbPokemon.CodPokemon = $id;";
 
   $Resultado = mysqli_query($connect, $Comando);
-  $list = mysqli_fetch_assoc($Resultado)
+  $list = mysqli_fetch_assoc($Resultado);
 ?>
 
 <!DOCTYPE html>
