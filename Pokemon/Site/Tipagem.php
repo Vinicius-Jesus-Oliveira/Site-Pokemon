@@ -3,32 +3,49 @@
   session_start();
 
   $Fraquezas = array('1' => '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
-  $Fraqueza = array();
+  $Resistencia1x = array('1' => '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+  $Resistencia2x = array('1' => '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
   for ($i = 1; $i <= 18; $i++)
   {
-    $sql = mysqli_query($connect, "call fraquezas($i);");
+    $sql = mysqli_query($connect, "call Fraquezas($i);");
 
     while ($list = mysqli_fetch_array($sql))
       $Fraquezas[$i] = $Fraquezas[$i] . "," . $list['F'];
     
     $Fraquezas[$i] = substr($Fraquezas[$i], 1);
-    $Fraqueza[$i] = explode(",", $Fraquezas[$i]);
+    $Fraquezas[$i] = explode(",", $Fraquezas[$i]);
 
     mysqli_free_result($sql);
     mysqli_next_result($connect);
   }
 
-  for ($a = 1; $a <= 18; $a++)
+  for ($i = 1; $i <= 18; $i++)
   {
-    for ($i = 0; $i < count($Fraqueza[$a]); $i++)
-    {
-      echo $Fraqueza[$a][$i] . "
-      ";
-    }
+    $sql = mysqli_query($connect, "call Resistencias1x($i);");
 
-    echo "
-    ";
+    while ($list = mysqli_fetch_array($sql))
+      $Resistencia1x[$i] = $Resistencia1x[$i] . "," . $list['1x'];
+    
+    $Resistencia1x[$i] = substr($Resistencia1x[$i], 1);
+    $Resistencia1x[$i] = explode(",", $Resistencia1x[$i]);
+
+    mysqli_free_result($sql);
+    mysqli_next_result($connect);
+  }
+
+  for ($i = 1; $i <= 18; $i++)
+  {
+    $sql = mysqli_query($connect, "call Resistencias2x($i);");
+
+    while ($list = mysqli_fetch_array($sql))
+      $Resistencia2x[$i] = $Resistencia2x[$i] . "," . $list['2x'];
+    
+    $Resistencia2x[$i] = substr($Resistencia2x[$i], 1);
+    $Resistencia2x[$i] = explode(",", $Resistencia2x[$i]);
+
+    mysqli_free_result($sql);
+    mysqli_next_result($connect);
   }
 ?>
 
@@ -145,7 +162,7 @@
 
         <div class="Tabelas">
           <?php
-            for ($i = 1; $i < 18; $i++)
+            for ($i = 1; $i <= 18; $i++)
             {
           ?>
               <table class="<?php echo $i; ?>">
@@ -155,20 +172,23 @@
                   <th>Resistências 2x</th>
                 </tr>
 
-                <tr>
-                  <?php
-                  ?>
-                </tr>
+                <?php
+                  if (count($Fraquezas[$i]) > count($Resistencia1x[$i]))
+                    $Qtd = count($Fraquezas[$i]);
+                  else
+                    $Qtd = count($Resistencia1x[$i]);
 
-                <tr>
-                  <?php
-                  ?>
-                </tr>
-
-                <tr>
-                  <?php
-                  ?>
-                </tr>
+                  for ($a = 0; $a < $Qtd; $a++)
+                  {
+                ?>
+                    <tr>
+                      <td> <?php if (empty($Fraquezas[$i][$a])) echo ""; else echo $Fraquezas[$i][$a]; ?> </td>
+                      <td> <?php if (empty($Resistencia1x[$i][$a])) echo ""; else echo $Resistencia1x[$i][$a]; ?> </td>
+                      <td> <?php if (empty($Resistencia2x[$i][$a])) echo ""; else echo $Resistencia2x[$i][$a]; ?> </td>
+                    </tr>
+                <?php
+                  }
+                ?>
               </table>
           <?php
             }
